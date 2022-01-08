@@ -1,6 +1,6 @@
 // Prise de contact avec l'API et récupération des données
 
-const dataCall = async () => {
+const getProducts = async () => {
   products = await fetch("http://localhost:3000/api/products")
     .then((response) => response.json())
     .catch(
@@ -12,8 +12,8 @@ const dataCall = async () => {
 
 //Affichage des produits sur la page index.html
 
-const productsDisplay = async () => {
-  await dataCall();
+const displayProducts = async () => {
+  await getProducts();
   products.forEach(function (product) {
     document.querySelector(
       "#items"
@@ -28,4 +28,4 @@ const productsDisplay = async () => {
 };
 
 // Appel de la fonction afin d'afficher les produits
-productsDisplay();
+displayProducts();
