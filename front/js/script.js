@@ -3,11 +3,11 @@
 const getProducts = async () => {
   products = await fetch("http://localhost:3000/api/products")
     .then((response) => response.json())
-    .catch(
-      () =>
-        (document.querySelector("#items").innerHTML =
-          "L'affichage de nos produits est impossible à cause d'un soucis de connexion")
-    );
+    .catch(() => {
+      document.querySelector("#items").innerHTML =
+        "L'affichage de nos produits est impossible à cause d'un soucis de connexion";
+      document.querySelector("#items").style.background = "red";
+    });
 };
 
 //Affichage des produits sur la page index.html
