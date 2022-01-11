@@ -1,9 +1,12 @@
 // Prise de contact avec l'API et récupération des données
 
 const getProducts = async () => {
-  products = await fetch("http://localhost:3000/api/products")
+  await fetch("http://localhost:3000/api/products")
     .then((response) => response.json())
-    // Test avec .then((response) => console.log(response))
+    .then((response) => {
+      products = response;
+      console.log(products);
+    })
     .catch(() => {
       document.querySelector("#items").innerHTML =
         "L'affichage de nos produits est impossible à cause d'un soucis de connexion";
