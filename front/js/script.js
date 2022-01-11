@@ -3,6 +3,7 @@
 const getProducts = async () => {
   products = await fetch("http://localhost:3000/api/products")
     .then((response) => response.json())
+    // Test avec .then((response) => console.log(response))
     .catch(() => {
       document.querySelector("#items").innerHTML =
         "L'affichage de nos produits est impossible à cause d'un soucis de connexion";
