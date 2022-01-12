@@ -28,3 +28,24 @@ const getProduct = async () => {
 
 // appel de la fonction pour récupérer la promise
 getProduct();
+
+// Complétion des informations produit sur la page
+
+// function displayProduct(product) {
+// imagePlace.innerHTML = `<img src="${product.imageUrl}" alt="${product.altTxt}">`;
+// namePlace.innerHTML = `<h1 id=${product.name}</h1>`;
+// pricePlace.innerHTML = `<span id="price">${product.price}</span>`;
+// descriptionPlace.innerHTML = `<p id="description">${product.price}</p>`;
+// }
+
+// displayProduct();
+
+const displayProduct = async () => {
+  await getProduct();
+  imagePlace.innerHTML = `<img src="${product.imageUrl}" alt="${product.altTxt}">`;
+  namePlace.innerHTML = `<h1 id="title">${product.name}</h1>`;
+  pricePlace.innerHTML = `<span id="price">${product.price}</span>`;
+  descriptionPlace.innerHTML = `<p id="description">${product.description}</p>`;
+};
+
+displayProduct();
