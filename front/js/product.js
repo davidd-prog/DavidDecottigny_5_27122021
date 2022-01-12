@@ -4,6 +4,7 @@ const imagePlace = document.querySelector(".item__img");
 const namePlace = document.querySelector("#title");
 const pricePlace = document.querySelector("#price");
 const descriptionPlace = document.querySelector("#description");
+const colorPlace = document.querySelector("#colors");
 console.log(pricePlace);
 // Récupération de l'id produit
 
@@ -31,15 +32,6 @@ getProduct();
 
 // Complétion des informations produit sur la page
 
-// function displayProduct(product) {
-// imagePlace.innerHTML = `<img src="${product.imageUrl}" alt="${product.altTxt}">`;
-// namePlace.innerHTML = `<h1 id=${product.name}</h1>`;
-// pricePlace.innerHTML = `<span id="price">${product.price}</span>`;
-// descriptionPlace.innerHTML = `<p id="description">${product.price}</p>`;
-// }
-
-// displayProduct();
-
 const displayProduct = async () => {
   await getProduct();
   imagePlace.innerHTML = `<img src="${product.imageUrl}" alt="${product.altTxt}">`;
@@ -48,4 +40,14 @@ const displayProduct = async () => {
   descriptionPlace.innerHTML = `<p id="description">${product.description}</p>`;
 };
 
+const displayColors = async () => {
+  await getProduct();
+  product.colors.forEach(function (color) {
+    colorPlace.innerHTML += `<option value="${color}">${color}</option></p>`;
+  });
+  console.log(product.color);
+};
+
+displayColors();
 displayProduct();
+console.log(colorPlace);
