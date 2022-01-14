@@ -42,6 +42,7 @@ const displayProduct = async () => {
   } else {
     const itemSelector = document.querySelector(".item");
     itemSelector.innerHTML = `<p>Ce produit n'existe pas</p>`;
+    itemSelector.style.background = "red";
   }
 };
 
