@@ -47,3 +47,32 @@ const displayProduct = async () => {
 };
 
 displayProduct();
+
+// Envoyer les données produits vers le panier
+
+// Sélection du bouton "Ajouter au panier" pour le click-event
+const sendToCart = document.querySelector("#addToCart");
+// console.log(sendToCart);
+
+// Click event sur le bouton "Ajouter au panier"
+sendToCart.addEventListener("click", (event) => {
+  event.preventDefault();
+
+  // Récupératio des couleurs
+  const colorChoice = document.querySelector("#colors");
+  const colorSelect = colorChoice.value;
+  // console.log(colorSelect);
+
+  // Récupération de la quantité
+  const quantityChoice = document.querySelector("#quantity");
+  const quantitySelect = quantityChoice.value;
+  // console.log(quantitySelect);
+
+  // Récupération des infos à envoyer vers le panier
+  let productKeys = {
+    id: productId,
+    quantity: quantitySelect,
+    colors: colorSelect,
+  };
+  console.log(productKeys);
+});

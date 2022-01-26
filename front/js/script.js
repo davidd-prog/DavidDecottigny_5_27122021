@@ -5,7 +5,7 @@ const getProducts = async () => {
     .then((response) => response.json())
     .then((response) => {
       products = response;
-      console.log(products);
+      // console.log(products);
     })
     .catch(() => {
       document.querySelector("#items").innerHTML =
