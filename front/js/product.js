@@ -58,7 +58,7 @@ const sendToCart = document.querySelector("#addToCart");
 sendToCart.addEventListener("click", (event) => {
   event.preventDefault();
 
-  // Récupératio des couleurs
+  // Récupération des couleurs
   const colorChoice = document.querySelector("#colors");
   const colorSelect = colorChoice.value;
   // console.log(colorSelect);
@@ -74,5 +74,21 @@ sendToCart.addEventListener("click", (event) => {
     quantity: quantitySelect,
     colors: colorSelect,
   };
-  console.log(productKeys);
+  // console.log(productKeys);
+
+  // Vérification de la validité des options choisies
+  if (colorSelect === "") {
+    alert("Veuillez choisir une couleur pour votre produit");
+  } else if (quantitySelect <= 0 || quantitySelect > 100) {
+    alert("Veuillez choisir une quantité valide comprise entre 0 et 100");
+  } else {
+    console.log(productKeys);
+  }
 });
+
+// Gestion du localStorage
+
+// Check des produits présents dans le localStorage
+
+let productsCheck = JSON.parse(localStorage.getItem("keyProduct"));
+console.log(productsCheck);
