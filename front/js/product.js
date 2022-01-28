@@ -82,13 +82,24 @@ sendToCart.addEventListener("click", (event) => {
   } else if (quantitySelect <= 0 || quantitySelect > 100) {
     alert("Veuillez choisir une quantité valide comprise entre 0 et 100");
   } else {
-    console.log(productKeys);
+    // console.log(productKeys);
   }
+
+  // Gestion du localStorage
+
+  // Check des produits présents dans le localStorage
+
+  let productsCheck = JSON.parse(localStorage.getItem("keyProduct"));
+
+  // Conditions pour l'ajout de nouveaux objets dans le localStorage
+
+  if (productsCheck == null) {
+    productsCheck = [];
+    productsCheck.push(productKeys);
+    localStorage.setItem("keyProduct", JSON.stringify(productsCheck));
+  } else {
+    productsCheck.push(productKeys);
+    localStorage.setItem("keyProduct", JSON.stringify(productsCheck));
+  }
+  console.log(productsCheck);
 });
-
-// Gestion du localStorage
-
-// Check des produits présents dans le localStorage
-
-let productsCheck = JSON.parse(localStorage.getItem("keyProduct"));
-console.log(productsCheck);
