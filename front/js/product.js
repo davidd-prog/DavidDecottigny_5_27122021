@@ -93,13 +93,17 @@ sendToCart.addEventListener("click", (event) => {
 
   // Conditions pour l'ajout de nouveaux objets dans le localStorage
 
+  // constante transfert du produit vers le localStorage
+  const productValidate = () => {
+    productsCheck.push(productKeys);
+    localStorage.setItem("keyProduct", JSON.stringify(productsCheck));
+  };
+
   if (productsCheck == null) {
     productsCheck = [];
-    productsCheck.push(productKeys);
-    localStorage.setItem("keyProduct", JSON.stringify(productsCheck));
+    productValidate();
   } else {
-    productsCheck.push(productKeys);
-    localStorage.setItem("keyProduct", JSON.stringify(productsCheck));
+    productValidate();
   }
   console.log(productsCheck);
 });
