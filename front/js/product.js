@@ -76,6 +76,8 @@ sendToCart.addEventListener("click", (event) => {
   };
   // console.log(productKeys);
 
+  // Gestion du localStorage
+
   // Vérification de la validité des options choisies
   if (colorSelect === "") {
     alert("Veuillez choisir une couleur pour votre produit");
@@ -83,27 +85,26 @@ sendToCart.addEventListener("click", (event) => {
     alert("Veuillez choisir une quantité valide comprise entre 0 et 100");
   } else {
     // console.log(productKeys);
+
+    // Check des produits présents dans le localStorage
+
+    let productsCheck = JSON.parse(localStorage.getItem("keyProduct"));
+
+    // Conditions pour l'ajout de nouveaux produits dans le localStorage
+
+    // constante transfert du produit vers le localStorage
+    const productValidate = () => {
+      productsCheck.push(productKeys);
+      localStorage.setItem("keyProduct", JSON.stringify(productsCheck));
+    };
+
+    // Conditions d'ajout des produits vers le localStorage
+    if (productsCheck == null) {
+      productsCheck = [];
+      productValidate();
+    } else {
+      productValidate();
+    }
+    console.log(productsCheck);
   }
-
-  // Gestion du localStorage
-
-  // Check des produits présents dans le localStorage
-
-  let productsCheck = JSON.parse(localStorage.getItem("keyProduct"));
-
-  // Conditions pour l'ajout de nouveaux objets dans le localStorage
-
-  // constante transfert du produit vers le localStorage
-  const productValidate = () => {
-    productsCheck.push(productKeys);
-    localStorage.setItem("keyProduct", JSON.stringify(productsCheck));
-  };
-
-  if (productsCheck == null) {
-    productsCheck = [];
-    productValidate();
-  } else {
-    productValidate();
-  }
-  console.log(productsCheck);
 });
