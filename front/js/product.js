@@ -71,7 +71,7 @@ sendToCart.addEventListener("click", (event) => {
   // Récupération des infos à envoyer vers le panier
   let productKeys = {
     id: productId,
-    quantity: quantitySelect,
+    quantity: Number(quantitySelect),
     colors: colorSelect,
   };
   // console.log(productKeys);
@@ -102,9 +102,22 @@ sendToCart.addEventListener("click", (event) => {
     if (productsCheck == null) {
       productsCheck = [];
       productValidate();
-    } else {
-      productValidate();
+
+      // Si le Storage n'est pas vide, on vérifie si il y a un produit similaire
+    } else if (productsCheck != null) {
+      const foundProducts = productsCheck.find(
+        (element) =>
+          element.id === productKeys.id &&
+          element.color === productKeys.colorSelect
+      );
+
+      // Si un produit similaire en id et couleur est renvoyé
+      if (foundProducts != undefined) {
+        parseInt((foundProducts.quantity += productKeys.quantity));
+        localStorage.setItem("keyProduct", JSON.stringify(productsCheck));
+        // console.log(foundProducts.quantity);
+      }
     }
-    console.log(productsCheck);
+    // console.log(productsCheck);
   }
 });
