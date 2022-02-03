@@ -104,11 +104,10 @@ sendToCart.addEventListener("click", (event) => {
       productValidate();
 
       // Si le Storage n'est pas vide, on vérifie si il y a un produit similaire
-    } else if (productsCheck != null) {
+    } else {
       const foundProducts = productsCheck.find(
         (element) =>
-          element.id === productKeys.id &&
-          element.color === productKeys.colorSelect
+          element.id === productKeys.id && element.colors === productKeys.colors
       );
 
       // Si un produit similaire en id et couleur est renvoyé
@@ -116,6 +115,10 @@ sendToCart.addEventListener("click", (event) => {
         parseInt((foundProducts.quantity += productKeys.quantity));
         localStorage.setItem("keyProduct", JSON.stringify(productsCheck));
         // console.log(foundProducts.quantity);
+        popUpConfirmation();
+      } else {
+        productValidate();
+        popUpConfirmation();
       }
     }
     // console.log(productsCheck);
