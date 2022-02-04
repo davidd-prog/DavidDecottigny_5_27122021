@@ -68,14 +68,6 @@ sendToCart.addEventListener("click", (event) => {
   const quantitySelect = quantityChoice.value;
   // console.log(quantitySelect);
 
-  // Récupération des infos à envoyer vers le panier
-  let productKeys = {
-    id: productId,
-    quantity: Number(quantitySelect),
-    colors: colorSelect,
-  };
-  // console.log(productKeys);
-
   // Gestion du localStorage
 
   // Vérification de la validité des options choisies
@@ -84,10 +76,15 @@ sendToCart.addEventListener("click", (event) => {
   } else if (quantitySelect <= 0 || quantitySelect > 100) {
     alert("Veuillez choisir une quantité valide comprise entre 0 et 100");
   } else {
+    // Récupération des infos à envoyer vers le panier
+    let productKeys = {
+      id: productId,
+      quantity: Number(quantitySelect),
+      colors: colorSelect,
+    };
     // console.log(productKeys);
 
     // Check des produits présents dans le localStorage
-
     let productsCheck = JSON.parse(localStorage.getItem("keyProduct"));
 
     // Conditions pour l'ajout de nouveaux produits dans le localStorage
@@ -98,10 +95,24 @@ sendToCart.addEventListener("click", (event) => {
       localStorage.setItem("keyProduct", JSON.stringify(productsCheck));
     };
 
+    // Constante pour information d'ajout(s) au panier et de redirection
+    const popUpConfirmation = () => {
+      if (
+        window.confirm(`${quantitySelect} canapé ${product.name} de couleur 
+        ${colorSelect} a bien été ajouté au panier. Cliquez sur OK 
+        pour consulter votre panier ou sur ANNULER pour continuer vos achats`)
+      ) {
+        window.location.href = "cart.html";
+      } else {
+        window.location.href = "index.html";
+      }
+    };
+
     // Conditions d'ajout des produits vers le localStorage
     if (productsCheck == null) {
       productsCheck = [];
       productValidate();
+      popUpConfirmation();
 
       // Si le Storage n'est pas vide, on vérifie si il y a un produit similaire
     } else {
