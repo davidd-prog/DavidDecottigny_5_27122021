@@ -85,14 +85,14 @@ sendToCart.addEventListener("click", (event) => {
     // console.log(productKeys);
 
     // Check des produits présents dans le localStorage
-    let productsCheck = JSON.parse(localStorage.getItem("keyProduct"));
+    let productsCheck = JSON.parse(localStorage.getItem("productKeys"));
 
     // Conditions pour l'ajout de nouveaux produits dans le localStorage
 
     // constante transfert du produit vers le localStorage
     const productValidate = () => {
       productsCheck.push(productKeys);
-      localStorage.setItem("keyProduct", JSON.stringify(productsCheck));
+      localStorage.setItem("productKeys", JSON.stringify(productsCheck));
     };
 
     // Constante pour information d'ajout(s) au panier et de redirection
@@ -124,7 +124,7 @@ sendToCart.addEventListener("click", (event) => {
       // Si un produit similaire en id et couleur est renvoyé
       if (foundProducts != undefined) {
         parseInt((foundProducts.quantity += productKeys.quantity));
-        localStorage.setItem("keyProduct", JSON.stringify(productsCheck));
+        localStorage.setItem("productKeys", JSON.stringify(productsCheck));
         // console.log(foundProducts.quantity);
         popUpConfirmation();
       } else {
