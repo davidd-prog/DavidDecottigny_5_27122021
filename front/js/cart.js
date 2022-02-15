@@ -79,3 +79,21 @@ const displayProductCart = async () => {
 };
 // Appel de la fonction pour afficher le panier
 displayProductCart();
+
+// Gestion du nombre total d'articles dans le panier et montant total du panier
+const totalProductsQuantity = () => {
+  const totalQuantitySelector = document.querySelector("#totalQuantity");
+  // console.log(totalQuantitySelector);
+
+  // Création d'un tableau pour accueillir les quantités des produits du panier
+  let totalQuantity = [];
+
+  // Je crée une boucle pour recueillir les quantités dans le localStorage et je les push dans le tableau
+  productsCheck.forEach((cartProduct) => {
+    totalQuantity.push(cartProduct.quantity);
+  });
+
+  // Addition des quantités et insertion du résultat dans le DOM
+  totalQuantitySelector.innerText = eval(totalQuantity.join("+"));
+};
+totalProductsQuantity();
