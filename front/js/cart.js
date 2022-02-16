@@ -1,10 +1,10 @@
 // Récupération des produits présents dans le localStorage
 let productsCheck = JSON.parse(localStorage.getItem("productKeys"));
-console.log(productsCheck);
+// console.log(productsCheck);
 
 // Sélection de la section pour l'injection des produits dans le DOM
 const cartSelector = document.querySelector("#cart__items");
-console.log(cartSelector);
+// console.log(cartSelector);
 
 const getProduct = async (productId) => {
   await fetch(`http://localhost:3000/api/products/${productId}`)
@@ -31,7 +31,7 @@ const displayProductCart = async () => {
     // Création d'un tableau support pour accueillir les tours de boucle du localStorage
     let cartProductsSupport = [];
 
-    // Incrémentation en boucle des infos du localStorage
+    // Incrémentation en boucle des infos du localStorage et de l'API
     for (i = 0; i < productsCheck.length; i++) {
       // console.log(productsCheck.length);
       await getProduct(productsCheck[i].id);
@@ -73,6 +73,7 @@ const displayProductCart = async () => {
                 </div>
               </article>`;
     }
+    // console.log(product.price);
     // Injection du tableau dans le DOM
     cartSelector.innerHTML = cartProductsSupport;
   }
@@ -96,4 +97,28 @@ const totalProductsQuantity = () => {
   // Addition des quantités et insertion du résultat dans le DOM
   totalQuantitySelector.innerText = eval(totalQuantity.join("+"));
 };
+
+// Appel de la fonction calculant le total d'articles dans le panier
 totalProductsQuantity();
+
+// Gestion du prix total du panier
+
+const totalProductsPrice = async () => {
+  const totalPriceSelector = document.querySelector("#totalPrice");
+  // console.log(totalPriceSelector);
+
+  // Création d'un tableau pour accueillir les prix des produits du panier
+  let totalPrice = [];
+
+  // Je crée une boucle pour recueillir les prix dans le localStorage et à l'aide de l'API, puis je les push dans le tableau
+  for (j = 0; j < productsCheck.length; j++) {
+    await getProduct(productsCheck[j].id);
+
+    totalPrice.push(product.price);
+  }
+  console.log(totalPrice);
+
+  // Addition des quantités et insertion du résultat dans le DOM
+  totalPriceSelector.innerText = eval(totalPrice.join("+"));
+};
+totalProductsPrice();
