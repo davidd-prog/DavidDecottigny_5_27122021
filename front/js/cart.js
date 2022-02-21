@@ -131,4 +131,33 @@ totalProductsPrice();
 // Gestion de la mise à jour des quantités d'articles sur la page panier
 
 // Fonction validant la mise à jour des quantités dans le panier
-const quantityUpdate = () => {};
+const quantityUpdate = () => {
+  // Ciblage dans le DOM des input de quantité
+  quantitiesInput = document.querySelectorAll(".itemQuantity");
+  console.log(quantitiesInput);
+
+  // Vérification d'accès aux infos du localStorage
+  console.log(productsCheck);
+
+  // Boucle sollicitant la mise à jour de la quantité
+  productsCheck.forEach((product, i) => {
+    // Change event sur les input de quantité
+    quantitiesInput[i].addEventListener("change", (event) => {
+      // Si la valeur de l'index est valide
+      if (quantitiesInput[i].value > 0 && quantitiesInput[i].value <= 100) {
+        // Je récupère l'index du produit ciblé en fonction de la smilarité de l'id et de la couleur
+        const productIndex = productsCheck.findIndex(
+          (element) =>
+            element.id === product.id && element.color === product.color
+        );
+        // puis je modifie la quantité du produit en fonction de la valeur de l'input et enregistre cette nouvelle quantité dans le localStorage
+        productsCheck[productIndex].quantity = Number(quantitiesInput[i].value);
+        localStorage.setItem("productKeys", JSON.stringify(productsCheck));
+        // Et enfin je recharge la page mise à jour
+        location.reload();
+      } else {
+        alert("Veuillez sélectionner une quantité entre 1 et 100");
+      }
+    });
+  });
+};
