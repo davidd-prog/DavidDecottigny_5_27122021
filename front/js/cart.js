@@ -78,6 +78,8 @@ const displayProductCart = async () => {
     cartSelector.innerHTML = cartProductsSupport;
     // appel de la fonction afin de récupérer les valeurs des input
     quantityUpdate();
+    // appel de la fonction afin de pouvoir récupérer les boutons de suppression de produits
+    productRemove();
   }
 };
 // Appel de la fonction pour afficher le panier
@@ -134,18 +136,18 @@ totalProductsPrice();
 const quantityUpdate = () => {
   // Ciblage dans le DOM des input de quantité
   quantitiesInput = document.querySelectorAll(".itemQuantity");
-  console.log(quantitiesInput);
+  // console.log(quantitiesInput);
 
   // Vérification d'accès aux infos du localStorage
-  console.log(productsCheck);
+  // console.log(productsCheck);
 
   // Boucle sollicitant la mise à jour de la quantité
-  productsCheck.forEach((product, i) => {
+  productsCheck.forEach(function (product, i) {
     // Change event sur les input de quantité
     quantitiesInput[i].addEventListener("change", (event) => {
       // Si la valeur de l'index est valide
       if (quantitiesInput[i].value > 0 && quantitiesInput[i].value <= 100) {
-        // Je récupère l'index du produit ciblé en fonction de la smilarité de l'id et de la couleur
+        // Je récupère l'index du produit ciblé en fonction de la similarité de l'id et de la couleur
         const productIndex = productsCheck.findIndex(
           (element) =>
             element.id === product.id && element.color === product.color
@@ -157,6 +159,36 @@ const quantityUpdate = () => {
         location.reload();
       } else {
         alert("Veuillez sélectionner une quantité entre 1 et 100");
+      }
+    });
+  });
+};
+
+// Gestion de la suppression d'un article de la page panier
+const productRemove = () => {
+  // console.log(productsCheck);
+
+  // Ciblage dans le DOM des boutons de suppression
+  let deleteButton = document.querySelectorAll(".deleteItem");
+  console.log(deleteButton);
+
+  // Boucle pour retrouver le bouton de suppression correspondant au produit à supprimer
+  deleteButton.forEach(function (product, i) {
+    deleteButton[i].addEventListener("click", (event) => {
+      if (window.confirm("Voulez-vous vraiment supprimer ce produit ?")) {
+        // Sélection du produit à supprimer en fonction de l'id et de la couleur de l'index
+        const idDelete = productsCheck[i].id;
+        const colorDelete = productsCheck[i].color;
+        // Renvoi des données en conservant tous les produits différents du produit cliqué
+        const returnedStorage = productsCheck.filter(
+          (product) => product.id !== idDelete || product.color !== colorDelete
+        );
+        // Stockage du tableau mis à jour dans le localStorage
+        localStorage.setItem("productKeys", JSON.stringify(returnedStorage));
+        // Pop up de confirmation de suppression du produit
+        alert("Ce produit a bien été supprimé");
+        // rechargement de la page mise à jour
+        location.reload();
       }
     });
   });
