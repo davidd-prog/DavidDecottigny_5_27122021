@@ -22,8 +22,8 @@ const getProduct = async (productId) => {
 
 // Mise en place de l'affichage des produits du panier
 const displayProductCart = async () => {
-  // Si le panier est vide :
-  if (productsCheck == null) {
+  // Si le panier est vide, qu'aucun élément n'est présent dans le tableau :
+  if (productsCheck.length == 0) {
     cartSelector.innerHTML = `<p>Votre panier est vide</p>`;
   } else {
     //   console.log("Le panier n'est pas vide");
@@ -193,3 +193,5 @@ const productRemove = () => {
     });
   });
 };
+
+// Gestion du formulaire
