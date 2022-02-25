@@ -175,13 +175,14 @@ const quantityUpdate = () => {
 const productRemove = () => {
   // console.log(productsCheck);
 
-  // Ciblage dans le DOM des boutons de suppression
+  //Ciblage dans le DOM des boutons de suppression
   let deleteButton = document.querySelectorAll(".deleteItem");
-  console.log(deleteButton);
+  // console.log(deleteButton);
 
   // Boucle pour retrouver le bouton de suppression correspondant au produit à supprimer
   deleteButton.forEach(function (product, i) {
     deleteButton[i].addEventListener("click", (event) => {
+      event.preventDefault();
       if (window.confirm("Voulez-vous vraiment supprimer ce produit ?")) {
         // Sélection du produit à supprimer en fonction de l'id et de la couleur de l'index
         const idDelete = productsCheck[i].id;
@@ -192,10 +193,24 @@ const productRemove = () => {
         );
         // Stockage du tableau mis à jour dans le localStorage
         localStorage.setItem("productKeys", JSON.stringify(returnedStorage));
+        // Rappel des fonctions pour mettre à jour instantanément la quantité totale des articles et le montant total
+        totalProductsQuantity();
+        totalProductsPrice();
+        // Suppression instantanée de l'élément supprimé sur la page
+        deleteButton[
+          i
+        ].parentElement.parentElement.parentElement.parentElement.remove();
+
         // Pop up de confirmation de suppression du produit
         alert("Ce produit a bien été supprimé");
-        // rechargement de la page mise à jour
-        location.reload();
+        // Condition affichée sans rechargement de la page
+        // Si le panier est vide
+        if (productsCheck.length == 0) {
+          cartSelector.innerHTML = `<p>Votre panier est vide</p>`;
+        } else {
+          // si le panier n'est pas vide
+          displayProductCart();
+        }
       }
     });
   });
