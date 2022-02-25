@@ -88,6 +88,8 @@ displayProductCart();
 // Gestion du nombre total d'articles dans le panier et montant total du panier
 
 const totalProductsQuantity = () => {
+  // Récupération du localStorage
+  productsCheck = JSON.parse(localStorage.getItem("productKeys"));
   // Ciblage dans le DOM pour afficher la quantité totale de produits dans le panier
   const totalQuantitySelector = document.querySelector("#totalQuantity");
   // console.log(totalQuantitySelector);
@@ -110,6 +112,8 @@ totalProductsQuantity();
 // Gestion du prix total du panier
 
 const totalProductsPrice = async () => {
+  // Récupération du localStorage
+  productsCheck = JSON.parse(localStorage.getItem("productKeys"));
   // Ciblage dans le DOM pour afficher le montant total du panier
   const totalPriceSelector = document.querySelector("#totalPrice");
   // console.log(totalPriceSelector);
@@ -145,6 +149,7 @@ const quantityUpdate = () => {
   productsCheck.forEach(function (product, i) {
     // Change event sur les input de quantité
     quantitiesInput[i].addEventListener("change", (event) => {
+      event.preventDefault();
       // Si la valeur de l'index est valide
       if (quantitiesInput[i].value > 0 && quantitiesInput[i].value <= 100) {
         // Je récupère l'index du produit ciblé en fonction de la similarité de l'id et de la couleur
@@ -155,8 +160,10 @@ const quantityUpdate = () => {
         // puis je modifie la quantité du produit en fonction de la valeur de l'input et enregistre cette nouvelle quantité dans le localStorage
         productsCheck[productIndex].quantity = Number(quantitiesInput[i].value);
         localStorage.setItem("productKeys", JSON.stringify(productsCheck));
-        // Et enfin je recharge la page mise à jour
-        location.reload();
+
+        // Je conclue en appelant les dernières mises à jour du localStorage en terme de quantité de produits et de montant total du panier
+        totalProductsQuantity();
+        totalProductsPrice();
       } else {
         alert("Veuillez sélectionner une quantité entre 1 et 100");
       }
