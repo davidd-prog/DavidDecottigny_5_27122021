@@ -217,3 +217,228 @@ const productRemove = () => {
 };
 
 // Gestion du formulaire
+
+// Fonction de vérification du prénom
+const firstNameInputCheking = () => {
+  let firstNameInputCheking = false;
+  let firstNameSelector = document.getElementById("firstName");
+  // console.log(firstNameSelector);
+  let firstNameValue = firstNameSelector.value;
+  let firstNameErrorMessage = document.getElementById("firstNameErrorMsg");
+  let firstNameRegex = new RegExp("^[a-zA-Zàâäéèêëïîôöùûüç' ,.'-]{3,15}$");
+  if (firstNameRegex.test(firstNameValue)) {
+    firstNameErrorMessage.textContent = "prénom valide";
+    firstNameErrorMessage.style.color = "green";
+    firstNameInputCheking = true;
+  } else {
+    firstNameErrorMessage.style.color = "red";
+    firstNameErrorMessage.textContent =
+      "Veuillez renseigner votre prénom s'il vous plaît";
+  }
+  return firstNameInputCheking;
+};
+
+// Fonction de vérification immédiate de la validité du prénom
+const firstNameChangeAlert = () => {
+  let firstNameSelector = document.getElementById("firstName");
+  firstNameSelector.addEventListener("change", (event) => {
+    event.preventDefault();
+    console.log("étape du prénom");
+    firstNameInputCheking();
+  });
+};
+firstNameChangeAlert();
+
+// Fonction de vérification du nom
+const lastNameInputCheking = () => {
+  let lastNameInputCheking = false;
+  let lastNameSelector = document.getElementById("lastName");
+  // console.log(lastNameSelector);
+  let lastNameValue = lastNameSelector.value;
+  let lastNameErrorMessage = document.getElementById("lastNameErrorMsg");
+  let lastNameRegex = new RegExp("^[a-zA-Zàâäéèêëïîôöùûüç ,.'-]{1,25}$");
+  if (lastNameRegex.test(lastNameValue)) {
+    lastNameErrorMessage.textContent = "Nom valide";
+    lastNameErrorMessage.style.color = "green";
+    lastNameInputCheking = true;
+  } else {
+    lastNameErrorMessage.style.color = "red";
+    lastNameErrorMessage.textContent =
+      "Veuillez renseigner votre nom s'il vous plaît";
+  }
+  return lastNameInputCheking;
+};
+
+// Fonction de vérification immédiate de la validité du nom
+const lastNameChangeAlert = () => {
+  let lastNameSelector = document.getElementById("lastName");
+  lastNameSelector.addEventListener("change", (event) => {
+    event.preventDefault();
+    console.log("étape du nom");
+    lastNameInputCheking();
+  });
+};
+lastNameChangeAlert();
+
+// Fonction de vérification de l'adresse
+const addressInputCheking = () => {
+  let addressInputCheking = false;
+  let addressSelector = document.getElementById("address");
+  // console.log(addressSelector);
+  let addressValue = addressSelector.value;
+  let addressErrorMessage = document.getElementById("addressErrorMsg");
+  let addressRegex = new RegExp(
+    "^[0-9]{1,3}[a-z]{0,3}[,. ]{1}[ ]{0,1}[-a-zA-Zàâäéèêëïîôöùûüç']+"
+  );
+  if (addressRegex.test(addressValue)) {
+    addressErrorMessage.textContent = "Adresse valide";
+    addressErrorMessage.style.color = "green"
+    addressInputCheking = true;
+  } else {
+    addressErrorMessage.style.color = "red";
+    addressErrorMessage.textContent =
+      "Veuillez renseigner votre adresse s'il vous plaît";
+  }
+  return addressInputCheking;
+};
+
+// Fonction de vérification immédiate de la validité de l'adresse
+const addressChangeAlert = () => {
+  let addressNameSelector = document.getElementById("address");
+  addressNameSelector.addEventListener("change", (event) => {
+    event.preventDefault();
+    console.log("étape de l'adresse");
+    addressInputCheking();
+  });
+};
+addressChangeAlert();
+
+// Fonction de vérification de la ville
+const cityInputCheking = () => {
+  let cityInputCheking = false;
+  let citySelector = document.getElementById("city");
+  // console.log(citySelector);
+  let cityValue = citySelector.value;
+  let cityErrorMessage = document.getElementById("cityErrorMsg");
+  let cityRegex = new RegExp("^[a-zA-Zàâäéèêëïîôöùûüç ,.'-]+$");
+  if (cityRegex.test(cityValue)) {
+    cityErrorMessage.textContent = "Ville valide";
+    cityErrorMessage.style.color = "green";
+    cityInputCheking = true;
+  } else {
+    cityErrorMessage.style.color = "red";
+    cityErrorMessage.textContent =
+      "Veuillez renseigner votre ville s'il vous plaît";
+  }
+  return cityInputCheking;
+};
+
+// Fonction de vérification immédiate de la validité de la ville
+const cityChangeAlert = () => {
+  let cityNameSelector = document.getElementById("city");
+  cityNameSelector.addEventListener("change", (event) => {
+    event.preventDefault();
+    console.log("étape de la ville");
+    cityInputCheking();
+  });
+};
+cityChangeAlert();
+
+// Fonction de vérification de l'email
+const emailInputCheking = () => {
+  let emailInputCheking = false;
+  let emailSelector = document.getElementById("email");
+  // console.log(emailSelector);
+  let emailValue = emailSelector.value;
+  let emailErrorMessage = document.getElementById("emailErrorMsg");
+  let emailRegex = new RegExp(
+    "^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$"
+  );
+  if (emailRegex.test(emailValue)) {
+    emailErrorMessage.textContent = "email valide";
+    emailErrorMessage.style.color = "green"
+    emailInputCheking = true;
+    console.log(emailInputCheking);
+  } else {
+    emailErrorMessage.style.color = "red";
+    emailErrorMessage.textContent =
+      "Veuillez renseigner votre email s'il vous plaît";
+  }
+  return emailInputCheking;
+};
+
+// Fonction de vérification immédiate de la validité de l'email
+const emailChangeAlert = () => {
+  let emailNameSelector = document.getElementById("email");
+  emailNameSelector.addEventListener("change", (event) => {
+    event.preventDefault();
+    console.log("étape de l'email");
+    emailInputCheking();
+  });
+};
+emailChangeAlert();
+
+// Click event pour envoi du formulaire
+
+const submitForm = () => {
+  // Ciblage du bouton commander ! dans le DOM
+  let orderSelector = document.getElementById("order");
+
+  orderSelector.addEventListener("click", (event) => {
+    event.preventDefault();
+    // console.log("Tout fonctionne !");
+
+    // if (productsCheck.length != 0) {
+    //   // console.log(productsCheck);
+    //   // console.log("Je ne suis pas vide");
+
+    let validFirstName = firstNameInputCheking();
+    let validlastName = lastNameInputCheking();
+    let validAddress = addressInputCheking();
+    let validCity = cityInputCheking();
+    let validEmail = emailInputCheking();
+    console.log(
+      validFirstName,
+      validlastName,
+      validAddress,
+      validCity,
+      validEmail
+    );
+    // console.log(orderSelector);
+    if (
+      // Si les inputs sont validés
+      validFirstName &&
+      validlastName &&
+      validAddress &&
+      validCity &&
+      validEmail &&
+      productsCheck.length != 0
+    ) {
+      // Rassemble dans une variable client les inputs recueuillis
+      let contact = {
+        firstName: document.getElementById("firstName").value,
+        lastName: document.getElementById("lastName").value,
+        address: document.getElementById("address").value,
+        city: document.getElementById("city").value,
+        email: document.getElementById("email").value,
+      };
+      // Creation d'un tableau recueuillant les produits commandés
+      let products = [];
+      for (i = 0; i < productsCheck.length; i++) {
+        products.push(productsCheck);
+        // console.log(products);
+      }
+      // Regroupement des produits et des coordonnées du client
+      let order = {
+        contact,
+        products,
+      };
+      console.log(order);
+    } else {
+      alert("Données erronées");
+    }
+    // }
+    // Inputs du formulaire vérifiés
+  });
+};
+submitForm();
