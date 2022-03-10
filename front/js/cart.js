@@ -437,8 +437,33 @@ const submitForm = () => {
     } else {
       alert("Données erronées");
     }
-    // }
-    // Inputs du formulaire vérifiés
+    // requête POST sur l'API et récupération de l'identifiant de commande
+    const init = {
+      method: 'POST',
+      body: JSON.stringify(order),
+      headers: {
+        "Content-type": "application/json"
+      }
+    };
+    const postOrder = () => {
+      fetch("http://localhost:3000/api/products/order", init)
+        .then(() => {
+          (res) =>
+            res.json().then((response) => {
+              productsCheck.clear();
+              console.log("requête envoyée avec succès à l'API !");
+              window.location.href = "confirmation.html";
+            });
+        })
+        .catch((error) => {
+          alert(
+            "Une erreur s'est produite lors de la transmission des informations, veuillez réessayer ultérieurement"
+          );
+        });
+    }
+    postOrder();
+    
+    
   });
 };
 submitForm();
