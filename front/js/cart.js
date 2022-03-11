@@ -292,7 +292,7 @@ const addressInputCheking = () => {
   );
   if (addressRegex.test(addressValue)) {
     addressErrorMessage.textContent = "Adresse valide";
-    addressErrorMessage.style.color = "green"
+    addressErrorMessage.style.color = "green";
     addressInputCheking = true;
   } else {
     addressErrorMessage.style.color = "red";
@@ -356,7 +356,7 @@ const emailInputCheking = () => {
   );
   if (emailRegex.test(emailValue)) {
     emailErrorMessage.textContent = "email valide";
-    emailErrorMessage.style.color = "green"
+    emailErrorMessage.style.color = "green";
     emailInputCheking = true;
     console.log(emailInputCheking);
   } else {
@@ -388,10 +388,6 @@ const submitForm = () => {
     event.preventDefault();
     // console.log("Tout fonctionne !");
 
-    // if (productsCheck.length != 0) {
-    //   // console.log(productsCheck);
-    //   // console.log("Je ne suis pas vide");
-
     let validFirstName = firstNameInputCheking();
     let validlastName = lastNameInputCheking();
     let validAddress = addressInputCheking();
@@ -414,7 +410,7 @@ const submitForm = () => {
       validEmail &&
       productsCheck.length != 0
     ) {
-      // Rassemble dans une variable client les inputs recueuillis
+      // Rassemble dans un objet contact les inputs recueuillis
       let contact = {
         firstName: document.getElementById("firstName").value,
         lastName: document.getElementById("lastName").value,
@@ -425,45 +421,46 @@ const submitForm = () => {
       // Creation d'un tableau recueuillant les produits commandés
       let products = [];
       for (i = 0; i < productsCheck.length; i++) {
-        products.push(productsCheck);
-        // console.log(products);
+        products.push(productsCheck[i]["id"]);
       }
       // Regroupement des produits et des coordonnées du client
-      let order = {
+      var order = {
         contact,
         products,
       };
-      console.log(order);
     } else {
       alert("Données erronées");
     }
-    // requête POST sur l'API et récupération de l'identifiant de commande
-    const init = {
-      method: 'POST',
+    
+    // seconds paramètres de la requête POST sur l'API
+    var init = {
+      method: "POST",
       body: JSON.stringify(order),
       headers: {
-        "Content-type": "application/json"
-      }
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
     };
+
+    // requête POST sur l'API et récupération de l'identifiant de commande dans l'URL
     const postOrder = () => {
       fetch("http://localhost:3000/api/products/order", init)
-        .then(() => {
-          (res) =>
-            res.json().then((response) => {
-              productsCheck.clear();
-              console.log("requête envoyée avec succès à l'API !");
-              window.location.href = "confirmation.html";
-            });
+        .then((res) => {
+          return res.json();
+        })
+        .then((order) => {
+          console.log(order);
+          console.log(productsCheck);
+          localStorage.removeItem("productKeys");
+          // console.log("requête envoyée avec succès");
+          // envoie vers la page de de confirmation
+          document.location.href = `confirmation.html?orderId=${order.orderId}`;
         })
         .catch((error) => {
-          alert(
-            "Une erreur s'est produite lors de la transmission des informations, veuillez réessayer ultérieurement"
-          );
+          alert("error");
         });
-    }
+    };
     postOrder();
-    
-    
   });
 };
 submitForm();
