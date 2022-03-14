@@ -6,6 +6,7 @@ let productsCheck = JSON.parse(localStorage.getItem("productKeys"));
 const cartSelector = document.querySelector("#cart__items");
 // console.log(cartSelector);
 
+// Récupération des infos complémentaires grâce à l'API
 const getProduct = async (productId) => {
   await fetch(`http://localhost:3000/api/products/${productId}`)
     .then((res) => res.json())
@@ -23,7 +24,7 @@ const getProduct = async (productId) => {
 // Mise en place de l'affichage des produits du panier
 const displayProductCart = async () => {
   // Si le panier est vide, qu'aucun élément n'est présent dans le tableau :
-  if (productsCheck.length == 0) {
+  if (productsCheck == 0) {
     cartSelector.innerHTML = `<p>Votre panier est vide</p>`;
   } else {
     //   console.log("Le panier n'est pas vide");
@@ -451,9 +452,15 @@ const submitForm = () => {
         .then((order) => {
           console.log(order);
           console.log(productsCheck);
-          localStorage.removeItem("productKeys");
+          // Filtre mis en place afin de vider le localStorage après la commande
+          const newStorage = productsCheck.filter(
+            (product) =>
+            product.keys == 0
+          );
+          // mise à jour du localStorage grâce au transfert du résultat du filtre
+          localStorage.setItem("productKeys", JSON.stringify(newStorage))
           // console.log("requête envoyée avec succès");
-          // envoie vers la page de de confirmation
+          // Redirection vers la page de confirmation
           document.location.href = `confirmation.html?orderId=${order.orderId}`;
         })
         .catch((error) => {
