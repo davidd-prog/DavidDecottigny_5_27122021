@@ -5,6 +5,9 @@ let productsCheck = JSON.parse(localStorage.getItem("productKeys"));
 // Sélection de la section pour l'injection des produits dans le DOM
 const cartSelector = document.querySelector("#cart__items");
 // console.log(cartSelector);
+// Sélection du formulaire dans le DOM afin de le faire disparaître en cas de panier vide
+   const formRemove = document.querySelector(".cart__order__form");
+
 
 // Récupération des infos complémentaires grâce à l'API
 const getProduct = async (productId) => {
@@ -26,6 +29,8 @@ const displayProductCart = async () => {
   // Si le panier est vide, qu'aucun élément n'est présent dans le tableau :
   if (productsCheck == 0) {
     cartSelector.innerHTML = `<p>Votre panier est vide</p>`;
+    formRemove.style.display = "none";
+    
   } else {
     //   console.log("Le panier n'est pas vide");
 
@@ -208,6 +213,7 @@ const productRemove = () => {
         // Si le panier est vide
         if (productsCheck.length == 0) {
           cartSelector.innerHTML = `<p>Votre panier est vide</p>`;
+          formRemove.style.display = "none";
         } else {
           // si le panier n'est pas vide
           displayProductCart();
