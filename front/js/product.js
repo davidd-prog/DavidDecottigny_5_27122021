@@ -20,7 +20,7 @@ const getProduct = async () => {
 };
 
 // appel de la fonction pour récupérer la promise
-getProduct();
+// getProduct();
 
 // Complétion des informations produit sur la page
 
@@ -84,18 +84,18 @@ sendToCart.addEventListener("click", (event) => {
     };
     // console.log(productKeys);
 
-    // Check des produits présents dans le localStorage
+    //  Création de la variable récupérant les produits présents dans le localStorage
     let productsCheck = JSON.parse(localStorage.getItem("productKeys"));
 
     // Conditions pour l'ajout de nouveaux produits dans le localStorage
 
-    // constante transfert du produit vers le localStorage
+    // Fonction de transfert du produit vers le localStorage
     const productValidate = () => {
       productsCheck.push(productKeys);
       localStorage.setItem("productKeys", JSON.stringify(productsCheck));
     };
 
-    // Constante pour information d'ajout(s) au panier et de redirection
+    // Fonction pour information d'ajout(s) au panier et de redirection
     const popUpConfirmation = () => {
       if (
         window.confirm(`${quantitySelect} canapé ${product.name} de couleur 
