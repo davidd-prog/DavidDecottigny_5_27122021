@@ -6,8 +6,7 @@ let productsCheck = JSON.parse(localStorage.getItem("productKeys"));
 const cartSelector = document.querySelector("#cart__items");
 // console.log(cartSelector);
 // Sélection du formulaire dans le DOM afin de le faire disparaître en cas de panier vide
-   const formRemove = document.querySelector(".cart__order__form");
-
+const formRemove = document.querySelector(".cart__order__form");
 
 // Récupération des infos complémentaires grâce à l'API
 const getProduct = async (productId) => {
@@ -31,7 +30,11 @@ const getProduct = async (productId) => {
 // Mise en place de l'affichage des produits du panier
 const displayProductCart = async () => {
   // Si le panier est vide, qu'aucun élément n'est présent dans le tableau :
-  if (productsCheck == null || undefined == productsCheck || productsCheck.length == 0) {
+  if (
+    productsCheck == null ||
+    undefined == productsCheck ||
+    productsCheck.length == 0
+  ) {
     cartSelector.innerHTML = `<p>Votre panier est vide</p>`;
     formRemove.style.display = "none";
   } else {
@@ -106,11 +109,15 @@ const totalProductsQuantity = () => {
   // Initialisation de la base du calcul de la quantité totale du panier
   let quantity = 0;
   // Je crée une boucle pour recueillir les quantités dans le localStorage et j'additionne les quantités croisées à chaque tour de boucle
- if (productsCheck != null && undefined != productsCheck && productsCheck.length > 0) {
-  productsCheck.forEach((cartProduct) => {
-    quantity += cartProduct.quantity;
-  });
- }
+  if (
+    productsCheck != null &&
+    undefined != productsCheck &&
+    productsCheck.length > 0
+  ) {
+    productsCheck.forEach((cartProduct) => {
+      quantity += cartProduct.quantity;
+    });
+  }
   // Insertion du résultat dans le DOM
 
   totalQuantitySelector.innerText = quantity;
@@ -130,18 +137,18 @@ const totalProductsPrice = async () => {
 
   // Initialisation de la base du calcul du prix total
   let totalPrice = 0;
-if (
-  productsCheck != null &&
-  undefined != productsCheck &&
-  productsCheck.length > 0
-) {
-  // Je crée une boucle pour recueillir les prix dans le localStorage et à l'aide de l'API, puis je les cumule
-  for (var i = 0; i < productsCheck.length; i++) {
-    await getProduct(productsCheck[i].id);
-    totalPrice += productsCheck[i].quantity * product.price;
-    // totalPrice.push(product.price);
+  if (
+    productsCheck != null &&
+    undefined != productsCheck &&
+    productsCheck.length > 0
+  ) {
+    // Je crée une boucle pour recueillir les prix dans le localStorage et à l'aide de l'API, puis je les cumule
+    for (var i = 0; i < productsCheck.length; i++) {
+      await getProduct(productsCheck[i].id);
+      totalPrice += productsCheck[i].quantity * product.price;
+      // totalPrice.push(product.price);
+    }
   }
-}
   // console.log(totalPrice);
 
   // Insertion du résultat dans le DOM
@@ -213,7 +220,7 @@ const productRemove = () => {
         totalProductsPrice();
         // Suppression instantanée de l'élément supprimé sur la page
         // deleteButton[
-          // i
+        // i
         // ].parentElement.parentElement.parentElement.parentElement.remove();
 
         // Pop up de confirmation de suppression du produit
@@ -446,7 +453,7 @@ const submitForm = () => {
     } else {
       alert("Données erronées");
     }
-    
+
     // seconds paramètres de la requête POST sur l'API
     var init = {
       method: "POST",
@@ -459,28 +466,36 @@ const submitForm = () => {
 
     // requête POST sur l'API et récupération de l'identifiant de commande dans l'URL
     const postOrder = () => {
-      fetch("http://localhost:3000/api/products/order", init)
-        .then((res) => {
-          return res.json();
-        })
-        .then((order) => {
-          console.log(order);
-          console.log(productsCheck);
-          localStorage.removeItem("productKeys");
-          // Filtre mis en place afin de vider le localStorage après la commande
-          // const newStorage = productsCheck.filter(
+      if (
+        validFirstName &&
+        validlastName &&
+        validAddress &&
+        validCity &&
+        validEmail
+      ) {
+        fetch("http://localhost:3000/api/products/order", init)
+          .then((res) => {
+            return res.json();
+          })
+          .then((order) => {
+            console.log(order);
+            console.log(productsCheck);
+            localStorage.removeItem("productKeys");
+            // Filtre mis en place afin de vider le localStorage après la commande
+            // const newStorage = productsCheck.filter(
             // (product) =>
             // product.keys == 0
-          // );
-          // mise à jour du localStorage grâce au transfert du résultat du filtre
-          // localStorage.setItem("productKeys", JSON.stringify(newStorage))
-          // console.log("requête envoyée avec succès");
-          // Redirection vers la page de confirmation
-          document.location.href = `confirmation.html?orderId=${order.orderId}`;
-        })
-        .catch((error) => {
-          alert("error");
-        });
+            // );
+            // mise à jour du localStorage grâce au transfert du résultat du filtre
+            // localStorage.setItem("productKeys", JSON.stringify(newStorage))
+            // console.log("requête envoyée avec succès");
+            // Redirection vers la page de confirmation
+            document.location.href = `confirmation.html?orderId=${order.orderId}`;
+          })
+          .catch((error) => {
+            alert("error");
+          });
+      }
     };
     postOrder();
   });
