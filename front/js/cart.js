@@ -1,14 +1,9 @@
-// Récupération des produits présents dans le localStorage
+// Récupération des données produit et déclaration de variables
 let productsCheck = JSON.parse(localStorage.getItem("productKeys"));
-// console.log(productsCheck);
 
-// Sélection de la section pour l'injection des produits dans le DOM
 const cartSelector = document.querySelector("#cart__items");
-// console.log(cartSelector);
-// Sélection du formulaire dans le DOM afin de le faire disparaître en cas de panier vide
 const formRemove = document.querySelector(".cart__order__form");
 
-// Récupération des infos complémentaires grâce à l'API
 const getProduct = async (productId) => {
   await fetch(`http://localhost:3000/api/products/${productId}`)
     .then((response) => {
@@ -18,18 +13,20 @@ const getProduct = async (productId) => {
     })
     .then((response) => {
       product = response;
-      // console.log(product);
     })
-    // Alerte en cas d'erreur de chargement de l'API
     .catch((error) => {
       product = false;
       alert("Impossible de charger les informations de ce produit");
     });
 };
 
-// Mise en place de l'affichage des produits du panier
+// Mise en place de l'affichage des produits du panier par la création d'un tableau dans lequel
+// je boucle pour incrémenter les différents produits présents dans le localStorage dans le tableau support
+// que j'injecte ensuite dans le DOM
+// j'appelle les fonctions de mise à jour des quantités et de suppression des produits afin de pouvoir
+// afficher dynamiquement un panier mis à jour.
+
 const displayProductCart = async () => {
-  // Si le panier est vide, qu'aucun élément n'est présent dans le tableau :
   if (
     productsCheck == null ||
     undefined == productsCheck ||
@@ -38,14 +35,9 @@ const displayProductCart = async () => {
     cartSelector.innerHTML = `<p>Votre panier est vide</p>`;
     formRemove.style.display = "none";
   } else {
-    //   console.log("Le panier n'est pas vide");
-
-    // Création d'un tableau support pour accueillir les tours de boucle du localStorage
     let cartProductsSupport = [];
 
-    // Incrémentation en boucle des infos du localStorage et de l'API
     for (i = 0; i < productsCheck.length; i++) {
-      // console.log(productsCheck.length);
       await getProduct(productsCheck[i].id);
       cartProductsSupport =
         cartProductsSupport +
@@ -85,30 +77,21 @@ const displayProductCart = async () => {
                 </div>
               </article>`;
     }
-    // console.log(product.price);
-    // Injection du tableau dans le DOM
+
     cartSelector.innerHTML = cartProductsSupport;
-    // appel de la fonction afin de récupérer les valeurs des input
     quantityUpdate();
-    // appel de la fonction afin de pouvoir récupérer les boutons de suppression de produits
     productRemove();
   }
 };
-// Appel de la fonction pour afficher le panier
 displayProductCart();
 
 // Gestion du nombre total d'articles dans le panier et montant total du panier
-
+// Fonction calculant la quantité totale d'articles dans le panier
 const totalProductsQuantity = () => {
-  // Récupération du localStorage
   productsCheck = JSON.parse(localStorage.getItem("productKeys"));
-  // Ciblage dans le DOM pour afficher la quantité totale de produits dans le panier
   const totalQuantitySelector = document.querySelector("#totalQuantity");
-  // console.log(totalQuantitySelector);
-
-  // Initialisation de la base du calcul de la quantité totale du panier
   let quantity = 0;
-  // Je crée une boucle pour recueillir les quantités dans le localStorage et j'additionne les quantités croisées à chaque tour de boucle
+
   if (
     productsCheck != null &&
     undefined != productsCheck &&
@@ -118,72 +101,50 @@ const totalProductsQuantity = () => {
       quantity += cartProduct.quantity;
     });
   }
-  // Insertion du résultat dans le DOM
 
   totalQuantitySelector.innerText = quantity;
 };
-
-// Appel de la fonction calculant le total d'articles dans le panier
 totalProductsQuantity();
 
-// Gestion du prix total du panier
-
+// Fonction calculant le prix total du panier et insertion dans le DOM
 const totalProductsPrice = async () => {
-  // Récupération du localStorage
   productsCheck = JSON.parse(localStorage.getItem("productKeys"));
-  // Ciblage dans le DOM pour afficher le montant total du panier
   const totalPriceSelector = document.querySelector("#totalPrice");
-  // console.log(totalPriceSelector);
-
-  // Initialisation de la base du calcul du prix total
   let totalPrice = 0;
+
   if (
     productsCheck != null &&
     undefined != productsCheck &&
     productsCheck.length > 0
   ) {
-    // Je crée une boucle pour recueillir les prix dans le localStorage et à l'aide de l'API, puis je les cumule
     for (var i = 0; i < productsCheck.length; i++) {
       await getProduct(productsCheck[i].id);
       totalPrice += productsCheck[i].quantity * product.price;
-      // totalPrice.push(product.price);
     }
   }
-  // console.log(totalPrice);
-
-  // Insertion du résultat dans le DOM
   totalPriceSelector.innerText = totalPrice;
 };
 totalProductsPrice();
 
-// Gestion de la mise à jour des quantités d'articles sur la page panier
-
-// Fonction validant la mise à jour des quantités dans le panier
+// Fonction validant la mise à jour des quantités dans le panier, boucle récupérant les inputs de quantité mis à jour dynamiquement
+// et si la valeur de l'input est valide, je récupère l'index du produit correspondant en id et couleur puis modification et mise à jour de la valeur
+// de la quantité du produit dans le localStorage puis appel des fonctions de quantité totale et de prix total afin pour la mise à jour dynamique du panier
 const quantityUpdate = () => {
-  // Ciblage dans le DOM des input de quantité
   quantitiesInput = document.querySelectorAll(".itemQuantity");
-  // console.log(quantitiesInput);
 
-  // Vérification d'accès aux infos du localStorage
-  // console.log(productsCheck);
-
-  // Boucle sollicitant la mise à jour de la quantité
   productsCheck.forEach(function (product, i) {
-    // Change event sur les input de quantité
     quantitiesInput[i].addEventListener("change", (event) => {
       event.preventDefault();
-      // Si la valeur de l'index est valide
+
       if (quantitiesInput[i].value > 0 && quantitiesInput[i].value <= 100) {
-        // Je récupère l'index du produit ciblé en fonction de la similarité de l'id et de la couleur
         const productIndex = productsCheck.findIndex(
           (element) =>
             element.id === product.id && element.color === product.color
         );
-        // puis je modifie la quantité du produit en fonction de la valeur de l'input et enregistre cette nouvelle quantité dans le localStorage
+
         productsCheck[productIndex].quantity = Number(quantitiesInput[i].value);
         localStorage.setItem("productKeys", JSON.stringify(productsCheck));
 
-        // Je conclue en appelant les dernières mises à jour du localStorage en terme de quantité de produits et de montant total du panier
         totalProductsQuantity();
         totalProductsPrice();
       } else {
@@ -194,44 +155,30 @@ const quantityUpdate = () => {
 };
 
 // Gestion de la suppression d'un article de la page panier
+// affectation de l'id et de la couleur du produit cliqué puis filtre de tous ceux non identifiés
+// puisque conservés pour mise à jour du localStorage et l'affichage du panier, rappel des fonctions de totaux pour mise à jour
+// dynamique du panier. Alerte de confirmation de la suppression du produit puis rappel de l'insertion de message et suppression du formulaire
+// en cas de panier vide après suppression du dernier produit.
 const productRemove = () => {
-  // console.log(productsCheck);
-
-  //Ciblage dans le DOM des boutons de suppression
   let deleteButton = document.querySelectorAll(".deleteItem");
-  // console.log(deleteButton);
 
-  // Boucle pour retrouver le bouton de suppression correspondant au produit à supprimer
   deleteButton.forEach(function (product, i) {
     deleteButton[i].addEventListener("click", (event) => {
       event.preventDefault();
       if (window.confirm("Voulez-vous vraiment supprimer ce produit ?")) {
-        // Sélection du produit à supprimer en fonction de l'id et de la couleur de l'index
         const idDelete = productsCheck[i].id;
         const colorDelete = productsCheck[i].color;
-        // Renvoi des données en conservant tous les produits différents du produit cliqué
         const returnedStorage = productsCheck.filter(
           (product) => product.id !== idDelete || product.color !== colorDelete
         );
-        // Stockage du tableau mis à jour dans le localStorage
         localStorage.setItem("productKeys", JSON.stringify(returnedStorage));
-        // Rappel des fonctions pour mettre à jour instantanément la quantité totale des articles et le montant total
         totalProductsQuantity();
         totalProductsPrice();
-        // Suppression instantanée de l'élément supprimé sur la page
-        // deleteButton[
-        // i
-        // ].parentElement.parentElement.parentElement.parentElement.remove();
-
-        // Pop up de confirmation de suppression du produit
         alert("Ce produit a bien été supprimé");
-        // Condition affichée sans rechargement de la page
-        // Si le panier est vide
         if (productsCheck.length == 0) {
           cartSelector.innerHTML = `<p>Votre panier est vide</p>`;
           formRemove.style.display = "none";
         } else {
-          // si le panier n'est pas vide
           displayProductCart();
         }
       }
@@ -245,7 +192,6 @@ const productRemove = () => {
 const firstNameInputCheking = () => {
   let firstNameInputCheking = false;
   let firstNameSelector = document.getElementById("firstName");
-  // console.log(firstNameSelector);
   let firstNameValue = firstNameSelector.value;
   let firstNameErrorMessage = document.getElementById("firstNameErrorMsg");
   let firstNameRegex = new RegExp("^[a-zA-Zàâäéèêëïîôöùûüç' ,.'-]{3,15}$");
@@ -266,7 +212,6 @@ const firstNameChangeAlert = () => {
   let firstNameSelector = document.getElementById("firstName");
   firstNameSelector.addEventListener("change", (event) => {
     event.preventDefault();
-    console.log("étape du prénom");
     firstNameInputCheking();
   });
 };
@@ -276,7 +221,6 @@ firstNameChangeAlert();
 const lastNameInputCheking = () => {
   let lastNameInputCheking = false;
   let lastNameSelector = document.getElementById("lastName");
-  // console.log(lastNameSelector);
   let lastNameValue = lastNameSelector.value;
   let lastNameErrorMessage = document.getElementById("lastNameErrorMsg");
   let lastNameRegex = new RegExp("^[a-zA-Zàâäéèêëïîôöùûüç ,.'-]{1,25}$");
@@ -297,7 +241,6 @@ const lastNameChangeAlert = () => {
   let lastNameSelector = document.getElementById("lastName");
   lastNameSelector.addEventListener("change", (event) => {
     event.preventDefault();
-    console.log("étape du nom");
     lastNameInputCheking();
   });
 };
@@ -307,7 +250,6 @@ lastNameChangeAlert();
 const addressInputCheking = () => {
   let addressInputCheking = false;
   let addressSelector = document.getElementById("address");
-  // console.log(addressSelector);
   let addressValue = addressSelector.value;
   let addressErrorMessage = document.getElementById("addressErrorMsg");
   let addressRegex = new RegExp(
@@ -330,7 +272,6 @@ const addressChangeAlert = () => {
   let addressNameSelector = document.getElementById("address");
   addressNameSelector.addEventListener("change", (event) => {
     event.preventDefault();
-    console.log("étape de l'adresse");
     addressInputCheking();
   });
 };
@@ -340,7 +281,6 @@ addressChangeAlert();
 const cityInputCheking = () => {
   let cityInputCheking = false;
   let citySelector = document.getElementById("city");
-  // console.log(citySelector);
   let cityValue = citySelector.value;
   let cityErrorMessage = document.getElementById("cityErrorMsg");
   let cityRegex = new RegExp("^[a-zA-Zàâäéèêëïîôöùûüç ,.'-]+$");
@@ -361,7 +301,6 @@ const cityChangeAlert = () => {
   let cityNameSelector = document.getElementById("city");
   cityNameSelector.addEventListener("change", (event) => {
     event.preventDefault();
-    console.log("étape de la ville");
     cityInputCheking();
   });
 };
@@ -371,7 +310,6 @@ cityChangeAlert();
 const emailInputCheking = () => {
   let emailInputCheking = false;
   let emailSelector = document.getElementById("email");
-  // console.log(emailSelector);
   let emailValue = emailSelector.value;
   let emailErrorMessage = document.getElementById("emailErrorMsg");
   let emailRegex = new RegExp(
@@ -394,37 +332,26 @@ const emailChangeAlert = () => {
   let emailNameSelector = document.getElementById("email");
   emailNameSelector.addEventListener("change", (event) => {
     event.preventDefault();
-    console.log("étape de l'email");
     emailInputCheking();
   });
 };
 emailChangeAlert();
 
-// Click event pour envoi du formulaire
+// Envoi du formulaire
 
 const submitForm = () => {
-  // Ciblage du bouton commander ! dans le DOM
   let orderSelector = document.getElementById("order");
 
   orderSelector.addEventListener("click", (event) => {
     event.preventDefault();
-    // console.log("Tout fonctionne !");
 
     let validFirstName = firstNameInputCheking();
     let validlastName = lastNameInputCheking();
     let validAddress = addressInputCheking();
     let validCity = cityInputCheking();
     let validEmail = emailInputCheking();
-    console.log(
-      validFirstName,
-      validlastName,
-      validAddress,
-      validCity,
-      validEmail
-    );
-    console.log(orderSelector);
+
     if (
-      // Si les inputs sont validés
       validFirstName &&
       validlastName &&
       validAddress &&
@@ -432,7 +359,6 @@ const submitForm = () => {
       validEmail &&
       productsCheck.length != 0
     ) {
-      // Rassemble dans un objet contact les inputs recueuillis
       let contact = {
         firstName: document.getElementById("firstName").value,
         lastName: document.getElementById("lastName").value,
@@ -440,12 +366,10 @@ const submitForm = () => {
         city: document.getElementById("city").value,
         email: document.getElementById("email").value,
       };
-      // Creation d'un tableau recueuillant les produits commandés
       let products = [];
       for (i = 0; i < productsCheck.length; i++) {
         products.push(productsCheck[i]["id"]);
       }
-      // Regroupement des produits et des coordonnées du client
       var order = {
         contact,
         products,
@@ -453,8 +377,6 @@ const submitForm = () => {
     } else {
       alert("Données erronées");
     }
-
-    // seconds paramètres de la requête POST sur l'API
     var init = {
       method: "POST",
       body: JSON.stringify(order),
@@ -478,18 +400,7 @@ const submitForm = () => {
             return res.json();
           })
           .then((order) => {
-            console.log(order);
-            console.log(productsCheck);
             localStorage.removeItem("productKeys");
-            // Filtre mis en place afin de vider le localStorage après la commande
-            // const newStorage = productsCheck.filter(
-            // (product) =>
-            // product.keys == 0
-            // );
-            // mise à jour du localStorage grâce au transfert du résultat du filtre
-            // localStorage.setItem("productKeys", JSON.stringify(newStorage))
-            // console.log("requête envoyée avec succès");
-            // Redirection vers la page de confirmation
             document.location.href = `confirmation.html?orderId=${order.orderId}`;
           })
           .catch((error) => {

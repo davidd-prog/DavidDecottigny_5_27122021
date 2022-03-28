@@ -1,4 +1,6 @@
 // Prise de contact avec l'API et récupération des données
+// méthode fetch dont résulte une promise traitée ou
+// non en cas d'erreur.
 
 const getProducts = async () => {
   await fetch("http://localhost:3000/api/products")
@@ -9,7 +11,6 @@ const getProducts = async () => {
     })
     .then((response) => {
       products = response;
-      // console.log(products);
     })
     .catch(() => {
       document.querySelector("#items").innerHTML =
@@ -18,7 +19,8 @@ const getProducts = async () => {
     });
 };
 
-//Affichage des produits sur la page index.html
+//Collecte des données produits via une boucle
+// et affichage des produits par l'appel de la fonction
 
 const displayProducts = async () => {
   await getProducts();
@@ -35,5 +37,4 @@ const displayProducts = async () => {
   });
 };
 
-// Appel de la fonction afin d'afficher les produits
 displayProducts();
