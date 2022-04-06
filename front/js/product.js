@@ -35,9 +35,18 @@ const displayProduct = async () => {
       colorSelector.innerHTML += `<option value="${color}">${color}</option></p>`;
     });
   } else {
-    const itemSelector = document.querySelector(".item");
-    itemSelector.innerHTML = `<p>Ce produit n'existe pas</p>`;
-    itemSelector.style.background = "red";
+    const errorMessage = () => {
+      const itemSelector = document.querySelector(".item");
+      const newParagraph = document.createElement("p");
+      const messageSelector = document.querySelector("p");
+      itemSelector.appendChild(newParagraph);
+      const newContent = document.createTextNode("Ce produit n'existe pas");
+      newParagraph.appendChild(newContent);
+    };
+    errorMessage();
+    articleSelector = document.querySelector("article");
+    console.log(articleSelector);
+    articleSelector.style.display = "none";
   }
 };
 

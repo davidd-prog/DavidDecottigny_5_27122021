@@ -15,11 +15,8 @@ const getProducts = async () => {
     .catch(() => {
       const errorMessage = () => {
         const itemsSelector = document.querySelector("#items");
-        // console.log(itemsSelector);
         const newParagraph = document.createElement("p");
         const messageSelector = document.querySelector("p");
-        // console.log(messageSelector);
-        newParagraph.style.background = "red";
         itemsSelector.appendChild(newParagraph);
         const newContent = document.createTextNode(
           "Les produits ne peuvent être affichés en raison d'un soucis de connexion"
@@ -27,10 +24,6 @@ const getProducts = async () => {
         newParagraph.appendChild(newContent);
       };
       errorMessage();
-
-      // document.querySelector("#items").innerHTML =
-      //   "L'affichage de nos produits est impossible à cause d'un soucis de connexion";
-      // document.querySelector("#items").style.background = "red";
     });
 };
 
