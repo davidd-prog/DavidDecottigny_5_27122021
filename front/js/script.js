@@ -16,12 +16,9 @@ const getProducts = async () => {
       const errorMessage = () => {
         const itemsSelector = document.querySelector("#items");
         const newParagraph = document.createElement("p");
-        const messageSelector = document.querySelector("p");
+        newParagraph.textContent =
+          "Les produits ne peuvent être affichés en raison d'un soucis de connexion";
         itemsSelector.appendChild(newParagraph);
-        const newContent = document.createTextNode(
-          "Les produits ne peuvent être affichés en raison d'un soucis de connexion"
-        );
-        newParagraph.appendChild(newContent);
       };
       errorMessage();
     });
@@ -33,6 +30,7 @@ const getProducts = async () => {
 const displayProducts = async () => {
   await getProducts();
   products.forEach(function (product) {
+     const itemsSelector = document.querySelector("#items");
     document.querySelector(
       "#items"
     ).innerHTML += `<a href="./product.html?id=${product._id}">
