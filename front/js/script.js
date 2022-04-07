@@ -30,32 +30,32 @@ const getProducts = async () => {
 const displayProducts = async () => {
   await getProducts();
   products.forEach(function (product) {
-     const itemsSelector = document.querySelector("#items");
+    const itemsSelector = document.querySelector("#items");
 
-     let productLinkSelector = document.createElement("a");
-     productLinkSelector.href = "./product.html?id=" + product._id;
+    let productLinkSelector = document.createElement("a");
+    productLinkSelector.href = "./product.html?id=" + product._id;
 
-     let productArticleSelector = document.createElement("article");
+    let productArticleSelector = document.createElement("article");
 
-     let productImageSelector = document.createElement("img");
-     productImageSelector.alt = product.altTxt;
-     productImageSelector.src = product.imageUrl;
+    let productImageSelector = document.createElement("img");
+    productImageSelector.alt = product.altTxt;
+    productImageSelector.src = product.imageUrl;
 
-     let productNameSelector = document.createElement("h3");
-     productNameSelector.textContent = product.name;
-     productNameSelector.classList.add("productName");
+    let productNameSelector = document.createElement("h3");
+    productNameSelector.textContent = product.name;
+    productNameSelector.classList.add("productName");
 
-     let productDescriptionSelector = document.createElement("p");
-     productDescriptionSelector.textContent = product.description;
-     productDescriptionSelector.classList.add("productdescription");
+    let productDescriptionSelector = document.createElement("p");
+    productDescriptionSelector.textContent = product.description;
+    productDescriptionSelector.classList.add("productdescription");
 
-     productArticleSelector.appendChild(productImageSelector);
-     productArticleSelector.appendChild(productNameSelector);
-     productArticleSelector.appendChild(productDescriptionSelector);
+    productArticleSelector.appendChild(productImageSelector);
+    productArticleSelector.appendChild(productNameSelector);
+    productArticleSelector.appendChild(productDescriptionSelector);
 
-     productLinkSelector.appendChild(productArticleSelector);
+    productLinkSelector.appendChild(productArticleSelector);
 
-     itemsSelector.appendChild(productLinkSelector); 
+    itemsSelector.appendChild(productLinkSelector);
   });
 };
 

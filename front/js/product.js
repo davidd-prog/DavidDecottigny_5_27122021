@@ -16,7 +16,7 @@ const getProduct = async () => {
 };
 
 // Complétion des informations produit sur la page
-// Ciblage dans le DOM et boucle pour complétion des données du produit
+// Ciblage dans le DOM et création d'éléments pour complétion des données du produit
 // Ou affichage d'un message d'erreur
 
 const displayProduct = async () => {
@@ -27,25 +27,32 @@ const displayProduct = async () => {
     const priceSelector = document.querySelector("#price");
     const descriptionSelector = document.querySelector("#description");
     const colorSelector = document.querySelector("#colors");
-    imageSelector.innerHTML = `<img src="${product.imageUrl}" alt="${product.altTxt}">`;
-    nameSelector.innerHTML = `<h1 id="title">${product.name}</h1>`;
-    priceSelector.innerHTML = `<span id="price">${product.price}</span>`;
-    descriptionSelector.innerHTML = `<p id="description">${product.description}</p>`;
+
+    let productImageSelector = document.createElement("img");
+    productImageSelector.alt = product.altTxt;
+    productImageSelector.src = product.imageUrl;
+
+    imageSelector.appendChild(productImageSelector);
+
+    nameSelector.textContent = product.name;
+    priceSelector.textContent = product.price;
+    descriptionSelector.textContent = product.description;
+
     product.colors.forEach(function (color) {
-      colorSelector.innerHTML += `<option value="${color}">${color}</option></p>`;
+      let colorOptionSelector = document.createElement("option");
+      colorOptionSelector.value = color;
+      colorOptionSelector.textContent = color;
+      colorSelector.appendChild(colorOptionSelector);
     });
   } else {
     const errorMessage = () => {
       const itemSelector = document.querySelector(".item");
       const newParagraph = document.createElement("p");
-      const messageSelector = document.querySelector("p");
+      newParagraph.textContent = "Ce produit n'existe pas";
       itemSelector.appendChild(newParagraph);
-      const newContent = document.createTextNode("Ce produit n'existe pas");
-      newParagraph.appendChild(newContent);
     };
     errorMessage();
     articleSelector = document.querySelector("article");
-    console.log(articleSelector);
     articleSelector.style.display = "none";
   }
 };
