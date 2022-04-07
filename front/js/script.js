@@ -31,15 +31,31 @@ const displayProducts = async () => {
   await getProducts();
   products.forEach(function (product) {
      const itemsSelector = document.querySelector("#items");
-    document.querySelector(
-      "#items"
-    ).innerHTML += `<a href="./product.html?id=${product._id}">
-            <article>
-              <img src="${product.imageUrl}" alt="${product.altTxt}">
-              <h3 class="productName">${product.name}</h3>
-              <p class="productDescription">${product.description}</p>
-            </article>
-          </a>`;
+
+     let productLinkSelector = document.createElement("a");
+     productLinkSelector.href = "./product.html?id=" + product._id;
+
+     let productArticleSelector = document.createElement("article");
+
+     let productImageSelector = document.createElement("img");
+     productImageSelector.alt = product.altTxt;
+     productImageSelector.src = product.imageUrl;
+
+     let productNameSelector = document.createElement("h3");
+     productNameSelector.textContent = product.name;
+     productNameSelector.classList.add("productName");
+
+     let productDescriptionSelector = document.createElement("p");
+     productDescriptionSelector.textContent = product.description;
+     productDescriptionSelector.classList.add("productdescription");
+
+     productArticleSelector.appendChild(productImageSelector);
+     productArticleSelector.appendChild(productNameSelector);
+     productArticleSelector.appendChild(productDescriptionSelector);
+
+     productLinkSelector.appendChild(productArticleSelector);
+
+     itemsSelector.appendChild(productLinkSelector); 
   });
 };
 
