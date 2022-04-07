@@ -17,7 +17,7 @@ const getProduct = async () => {
 
 // Complétion des informations produit sur la page
 // Ciblage dans le DOM et création d'éléments pour complétion des données du produit
-// Ou affichage d'un message d'erreur
+// ou affichage d'un message d'erreur
 
 const displayProduct = async () => {
   await getProduct();

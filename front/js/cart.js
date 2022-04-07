@@ -20,11 +20,19 @@ const getProduct = async (productId) => {
     });
 };
 
-// Mise en place de l'affichage des produits du panier par la création d'un tableau dans lequel
+// Fonction gérant l'affichage lorsque le panier est vide puis
+// mise en place de l'affichage des produits du panier par la création d'un tableau dans lequel
 // je boucle pour incrémenter les différents produits présents dans le localStorage dans le tableau support
 // que j'injecte ensuite dans le DOM
 // j'appelle les fonctions de mise à jour des quantités et de suppression des produits afin de pouvoir
 // afficher dynamiquement un panier mis à jour.
+const emptyCartMessage = () => {
+  let emptyCartMessageSelector = document.createElement("p");
+  emptyCartMessageSelector.textContent = "Votre panier est vide";
+  cartSelector.innerHTML = "";
+  cartSelector.appendChild(emptyCartMessageSelector);
+  formRemove.style.display = "none";
+};
 
 const displayProductCart = async () => {
   if (
@@ -32,8 +40,7 @@ const displayProductCart = async () => {
     undefined == productsCheck ||
     productsCheck.length == 0
   ) {
-    cartSelector.innerHTML = `<p>Votre panier est vide</p>`;
-    formRemove.style.display = "none";
+    emptyCartMessage();
   } else {
     let cartProductsSupport = [];
 
@@ -102,7 +109,7 @@ const totalProductsQuantity = () => {
     });
   }
 
-  totalQuantitySelector.innerText = quantity;
+  totalQuantitySelector.textContent = quantity;
 };
 totalProductsQuantity();
 
@@ -122,7 +129,7 @@ const totalProductsPrice = async () => {
       totalPrice += productsCheck[i].quantity * product.price;
     }
   }
-  totalPriceSelector.innerText = totalPrice;
+  totalPriceSelector.textContent = totalPrice;
 };
 totalProductsPrice();
 
@@ -176,8 +183,7 @@ const productRemove = () => {
         totalProductsPrice();
         alert("Ce produit a bien été supprimé");
         if (productsCheck.length == 0) {
-          cartSelector.innerHTML = `<p>Votre panier est vide</p>`;
-          formRemove.style.display = "none";
+          emptyCartMessage();
         } else {
           displayProductCart();
         }
